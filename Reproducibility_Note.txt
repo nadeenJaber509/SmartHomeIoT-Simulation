@@ -1,0 +1,79 @@
+Smart Home IoT Network Simulation
+Reproducibility Note
+
+Software Environment
+- OMNeT++ version: 6.4.0
+- INET Framework version: 4.7.0
+- Operating system: macOS
+- Simulation duration: 100 seconds per run
+- Wireless technology: IEEE 802.15.4
+
+Project Structure
+- Project/simulations: NED network files, omnetpp.ini, XML configuration files, and run script.
+- Project/src: CommunicationApp source code, package definition, Makefile, and executable.
+- Results: simulation outputs organized into Experiment1 through Experiment5 and BonusWalls.
+- Project/simulations/walls.xml: physical brick-wall definition used in the bonus experiment.
+
+Running the Project
+1. Open the OMNeT++ IDE.
+2. Import the Project folder as an existing OMNeT++ project.
+3. Make sure that INET 4.7.0 is available and referenced by the project.
+4. Build the project using the release configuration.
+5. Open Project/simulations/omnetpp.ini.
+6. Select the required configuration.
+7. Run the configuration using Cmdenv or Qtenv.
+
+Main Configurations
+- Scalability: Experiment 1
+- ReportingInterval: Experiment 2
+- CriticalEvent: Experiment 3
+- Polling: Experiment 4 polling strategy
+- PubSub: Experiment 4 publish/subscribe strategy
+- PacketSize: Experiment 5 packet-size and fragmentation study
+- BonusNoWalls: Bonus experiment without a wall
+- BonusWithWalls: Bonus experiment with a brick wall
+
+Example Command
+Run the following command from the Project/simulations directory:
+
+../src/SmartHomeIoT -u Cmdenv -c Scalability -n ../src:.:../../inet-4.7.0/src -l ../../inet-4.7.0/src/INET omnetpp.ini
+
+The configuration name after “-c” can be changed to ReportingInterval, CriticalEvent, Polling, PubSub, PacketSize, BonusNoWalls, or BonusWithWalls.
+
+Experiment Runs
+- Experiment 1 varies the number of sensor nodes.
+- Experiment 2 keeps the number of sensors fixed and varies the reporting interval.
+- Experiment 3 evaluates critical-event delivery under four background-traffic levels using 30 independent repetitions per condition.
+- Experiment 4 compares Polling and Publish/Subscribe communication strategies.
+- Experiment 5 evaluates payload sizes of 20, 50, 100, 200, and 400 bytes. Each payload size is simulated using five independent repetitions, producing 25 runs in total.
+- The bonus experiment compares the same network with and without a brick wall. Each case uses five independent repetitions.
+- The BonusWithWalls configuration uses PhysicalEnvironment, walls.xml, and DielectricObstacleLoss to model wall attenuation.
+
+Random Seeds
+Independent repetitions use:
+
+seed-set = ${repetition}
+
+The repetition number and experiment parameter values are included in the output file names and run attributes.
+
+Result Files
+- .sca files contain scalar results.
+- .vec files contain vector results.
+- .vci files contain vector index information.
+- Experiment 3 contains many files because each of the four traffic conditions has 30 independent repetitions, and every run can generate .sca, .vec, and .vci files.
+- Experiment5_Summary.csv contains the processed results for the five payload sizes.
+- Experiment5_Simulation_Results.png contains the Experiment 5 plots.
+- BonusWalls_Summary.csv contains the processed comparison between the wall and no-wall cases.
+- BonusWalls_Comparison.png contains the plots for the bonus experiment.
+
+Plot Generation
+1. Open the result files using the OMNeT++ Analysis Tool or process the scalar files using Python.
+2. Group the results according to the experiment parameter and repetition.
+3. Calculate the mean and standard deviation across independent repetitions.
+4. Generate the PDR, delay, traffic-load, communication-strategy, packet-size, fragmentation, and bonus wall-comparison plots.
+5. Export the plots and include the selected figures in the technical report and presentation.
+
+Important Notes
+- The message “Simulation time limit reached at t=100s” indicates normal completion because the configured simulation duration is 100 seconds. It is not an execution error.
+- Qtenv may be used to visualize the topology and the brick wall, while Cmdenv is recommended for running multiple repetitions.
+- The wall visualization is only a visual representation. Its physical effect is modeled using walls.xml and DielectricObstacleLoss.

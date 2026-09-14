@@ -1,0 +1,3 @@
+package smarthomeiot;
+
+@license(LGPL);

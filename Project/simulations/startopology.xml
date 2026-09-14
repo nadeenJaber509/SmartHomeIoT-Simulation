@@ -1,0 +1,13 @@
+<config>
+    <interface hosts="gateway" address="10.0.0.1" netmask="255.255.x.x"/>
+    <interface hosts="**" address="10.0.x.x" netmask="255.255.x.x"/>
+
+    <route hosts="gateway"
+           interface="wlan0"
+           destination="*"
+           gateway="*"/>
+
+    <route hosts="temperatureSensor humiditySensor motionSensor1 motionSensor2 smokeSensor airQualitySensor doorSensor lightSensor lightActuator1 lightActuator2 hvacActuator alarmActuator"
+           destination="*"
+           gateway="10.0.0.1"/>
+</config>
